@@ -20,7 +20,9 @@ program
       r.dkimSelectors.forEach((d) => console.log(`DKIM ${d.selector}:`, d.record?.slice(0, 80)));
       r.findings.forEach((f) => console.log(chalk.yellow(`[${f.severity}] ${f.message}`)));
     }
-    process.exit(r.findings.some((f) => f.severity === 'critical' || f.severity === 'high') ? 2 : 0);
+    process.exit(
+      r.findings.some((f) => f.severity === 'critical' || f.severity === 'high') ? 2 : 0,
+    );
   });
 
 program.parse();

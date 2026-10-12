@@ -8,7 +8,17 @@ export interface EmailIntelReport {
   findings: Array<{ severity: string; id: string; message: string }>;
 }
 
-const COMMON_DKIM = ['default', 'google', 'selector1', 'selector2', 'k1', 's1', 'smtp', 'mail', 'dkim'];
+const COMMON_DKIM = [
+  'default',
+  'google',
+  'selector1',
+  'selector2',
+  'k1',
+  's1',
+  'smtp',
+  'mail',
+  'dkim',
+];
 
 async function txt(name: string): Promise<string[]> {
   try {
@@ -19,7 +29,9 @@ async function txt(name: string): Promise<string[]> {
   }
 }
 
-export function analyzeSpf(records: string[]): Array<{ severity: string; id: string; message: string }> {
+export function analyzeSpf(
+  records: string[],
+): Array<{ severity: string; id: string; message: string }> {
   const f: EmailIntelReport['findings'] = [];
   const spf = records.find((r) => r.startsWith('v=spf1'));
   if (!spf) {
@@ -27,7 +39,11 @@ export function analyzeSpf(records: string[]): Array<{ severity: string; id: str
     return f;
   }
   if (spf.includes('+all') || spf.match(/\s\+all/)) {
-    f.push({ severity: 'critical', id: 'spf-pass-all', message: 'SPF allows +all — spoofing risk' });
+    f.push({
+      severity: 'critical',
+      id: 'spf-pass-all',
+      message: 'SPF allows +all — spoofing risk',
+    });
   }
   if (spf.includes('~all')) {
     f.push({ severity: 'low', id: 'spf-softfail', message: 'SPF ends with ~all (softfail)' });
@@ -35,7 +51,9 @@ export function analyzeSpf(records: string[]): Array<{ severity: string; id: str
   return f;
 }
 
-export function analyzeDmarc(records: string[]): Array<{ severity: string; id: string; message: string }> {
+export function analyzeDmarc(
+  records: string[],
+): Array<{ severity: string; id: string; message: string }> {
   const f: EmailIntelReport['findings'] = [];
   const dmarc = records.find((r) => r.startsWith('v=DMARC1'));
   if (!dmarc) {
@@ -64,7 +82,11 @@ export async function reconEmailDomain(domain: string): Promise<EmailIntelReport
 
   const findings = [...analyzeSpf(spf), ...analyzeDmarc(dmarc)];
   if (dkimSelectors.length === 0) {
-    findings.push({ severity: 'low', id: 'no-dkim-common', message: 'No DKIM on common selectors (may exist on custom)' });
+    findings.push({
+      severity: 'low',
+      id: 'no-dkim-common',
+      message: 'No DKIM on common selectors (may exist on custom)',
+    });
   }
 
   return { domain: d, spf, dmarc, dkimSelectors, findings };
