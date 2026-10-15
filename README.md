@@ -19,7 +19,7 @@ actionable findings without MXToolbox tabs during an engagement.
 ## Install
 
 ```bash
-git clone https://github.com/HackerX-offical/hx-email-recon-cli.git
+git clone https://github.com/HackerX-official/hx-email-recon-cli.git
 cd hx-email-recon-cli
 npm install
 npm run build
@@ -33,7 +33,7 @@ hx-email recon example.com
 hx-email recon client.org --json
 ```
 
-Pair with [hx-dns-recon-cli](https://github.com/HackerX-offical/hx-dns-recon-cli) for
+Pair with [hx-dns-recon-cli](https://github.com/HackerX-official/hx-dns-recon-cli) for
 broader DNS surface mapping.
 
 ## Output
